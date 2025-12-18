@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>E-Services for Gram Panchayat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Online portal for Gram Panchayat services - Apply for certificates, track applications, and manage village services" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <header class="gp-header">
+    <div class="gp-header__brand">
+      <span class="gp-logo">GP</span>
+      <div>
+        <h1>E-Services for Gram Panchayat</h1>
+        <p>Citizen-centric online services for your village</p>
+      </div>
+    </div>
+    <nav class="gp-nav">
+      <button class="gp-btn gp-btn--ghost" data-view="login-view" id="nav-login-btn">Login</button>
+      <button class="gp-btn gp-btn--ghost" data-view="help-view" id="nav-help-btn">Help</button>
+      <button class="gp-btn gp-btn--ghost" id="nav-logout-btn" style="display: none;">
+        <span id="nav-user-name"></span> | Logout
+      </button>
+      <button class="gp-nav__mobile-toggle" id="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+    <div class="gp-nav__mobile" id="mobile-nav">
+      <button class="gp-btn gp-btn--ghost" data-view="login-view" id="mobile-login-btn">Login</button>
+      <button class="gp-btn gp-btn--ghost" data-view="help-view">Help</button>
+      <button class="gp-btn gp-btn--ghost" id="mobile-logout-btn" style="display: none;">Logout</button>
+    </div>
+  </header>
+
+  <main class="gp-main">
+    <!-- Left intro panel -->
+    <section class="gp-intro">
+      <h2>Welcome</h2>
+      <p>
+        This portal allows citizens to apply for Gram Panchayat services,
+        track application status, and get information about schemes.
+      </p>
+      <ul class="gp-intro__list">
+        <li><strong>Citizens:</strong> Register, search services, apply, track status.</li>
+        <li><strong>Staff:</strong> View assigned applications and update their status.</li>
+        <li><strong>Officer/Admin:</strong> Manage services and oversee applications.</li>
+      </ul>
+    </section>
+
+    <!-- Right content panel -->
+    <section class="gp-content">
+
+      <!-- LOGIN / REGISTER VIEW -->
+      <section id="login-view" class="gp-view gp-view--active">
+        <h2>Login</h2>
+        <form id="login-form" class="gp-form">
+          <label>
+            Email
+            <input type="email" id="login-email" required />
+          </label>
+          <label>
+            Password
+            <div class="gp-input-wrapper">
+              <input type="password" id="login-password" required />
+              <button type="button" class="gp-password-toggle" aria-label="Toggle password visibility">👁</button>
+            </div>
+          </label>
+
+          <label>
+            Role
+            <select id="login-role" required>
+              <option value="">Select role</option>
+              <option value="user">User / Citizen</option>
+              <option value="staff">Staff</option>
+              <option value="officer">Officer / Admin</option>
+            </select>
+          </label>
+
+          <button type="submit" class="gp-btn gp-btn--primary">Login</button>
+        </form>
+
+        <div class="gp-divider">
+          <span>OR</span>
+        </div>
+
+        <h3>New User? Register</h3>
+        <form id="register-form" class="gp-form">
+          <label>
+            Full Name
+            <input type="text" id="reg-name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" id="reg-email" required />
+          </label>
+          <label>
+            Password
+            <div class="gp-input-wrapper">
+              <input type="password" id="reg-password" required minlength="6" />
+              <button type="button" class="gp-password-toggle" aria-label="Toggle password visibility">👁</button>
+            </div>
+            <small class="gp-form-hint">Minimum 6 characters</small>
+          </label>
+
+          <button type="submit" class="gp-btn gp-btn--secondary">Register as User</button>
+        </form>
+      </section>
+
+      <!-- HELP VIEW -->
+      <section id="help-view" class="gp-view">
+        <h2>How to Use</h2>
+        <ol class="gp-help-list">
+          <li>Register as a User using your email address.</li>
+          <li>Login with your role (User / Staff / Officer).</li>
+          <li>Use the dashboard to access your role-specific features.</li>
+        </ol>
+      </section>
+
+      <!-- USER DASHBOARD -->
+      <section id="user-view" class="gp-view">
+        <div class="gp-view__header">
+          <h2>User Dashboard</h2>
+          <div class="gp-view__actions">
+            <span id="user-welcome"></span>
+            <button class="gp-btn gp-btn--ghost" id="logout-user">Logout</button>
+          </div>
+        </div>
+
+        <div class="gp-tabs" data-tabs="user">
+          <button class="gp-tab gp-tab--active" data-tab="user-services">Search Services</button>
+          <button class="gp-tab" data-tab="user-apply">Apply Service</button>
+          <button class="gp-tab" data-tab="user-status">My Applications</button>
+          <button class="gp-tab" data-tab="user-profile">My Profile</button>
+        </div>
+
+        <!-- USER: SEARCH SERVICES -->
+        <div id="user-services" class="gp-tab-panel gp-tab-panel--active">
+          <h3>Available Services</h3>
+          <input
+            type="search"
+            id="user-service-search"
+            class="gp-input--search"
+            placeholder="Search by service name or category..."
+          />
+          <div id="user-services-list" class="gp-card-list"></div>
+        </div>
+
+        <!-- USER: APPLY SERVICE -->
+        <div id="user-apply" class="gp-tab-panel">
+          <h3>Apply for a Service</h3>
+          <form id="user-apply-form" class="gp-form">
+            <label>
+              Select Service
+              <select id="apply-service-id" required>
+                <option value="">-- Select a service --</option>
+              </select>
+            </label>
+            
+            <!-- Dynamic form fields will be inserted here -->
+            <div id="service-form-fields" class="gp-service-fields"></div>
+            
+            <label>
+              Additional Notes (Optional)
+              <textarea id="apply-details" rows="3" placeholder="Any additional information you want to provide..."></textarea>
+            </label>
+            <button type="submit" class="gp-btn gp-btn--primary">Submit Application</button>
+          </form>
+        </div>
+
+        <!-- USER: STATUS -->
+        <div id="user-status" class="gp-tab-panel">
+          <h3>My Application Status</h3>
+          <div id="user-applications-list" class="gp-card-list"></div>
+        </div>
+
+        <!-- USER: PROFILE -->
+        <div id="user-profile" class="gp-tab-panel">
+          <h3>My Profile</h3>
+          <form id="user-profile-form" class="gp-form">
+            <label>
+              Full Name
+              <input type="text" id="profile-name" required />
+            </label>
+            <label>
+              Email
+              <input type="email" id="profile-email" required disabled />
+            </label>
+            <button type="submit" class="gp-btn gp-btn--secondary">Update Profile</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- STAFF DASHBOARD -->
+      <section id="staff-view" class="gp-view">
+        <div class="gp-view__header">
+          <h2>Staff Dashboard</h2>
+          <div class="gp-view__actions">
+            <span id="staff-welcome"></span>
+            <button class="gp-btn gp-btn--ghost" id="logout-staff">Logout</button>
+          </div>
+        </div>
+
+        <h3>Applications Assigned to You</h3>
+        <div id="staff-applications-list" class="gp-card-list"></div>
+      </section>
+
+      <!-- OFFICER / ADMIN DASHBOARD -->
+      <section id="officer-view" class="gp-view">
+        <div class="gp-view__header">
+          <h2>Officer / Admin Dashboard</h2>
+          <div class="gp-view__actions">
+            <span id="officer-welcome"></span>
+            <button class="gp-btn gp-btn--ghost" id="logout-officer">Logout</button>
+          </div>
+        </div>
+
+        <div class="gp-tabs" data-tabs="officer">
+          <button class="gp-tab gp-tab--active" data-tab="officer-services">Manage Services</button>
+          <button class="gp-tab" data-tab="officer-applications">All Applications</button>
+        </div>
+
+        <!-- OFFICER: SERVICES CRUD -->
+        <div id="officer-services" class="gp-tab-panel gp-tab-panel--active">
+          <div class="gp-panel-split">
+            <div>
+              <h3>Create / Update Service</h3>
+              <form id="officer-service-form" class="gp-form">
+                <input type="hidden" id="service-id" />
+                <label>
+                  Service Name
+                  <input type="text" id="service-name" required />
+                </label>
+                <label>
+                  Category
+                  <input type="text" id="service-category" required />
+                </label>
+                <label>
+                  Description
+                  <textarea id="service-description" rows="3" required></textarea>
+                </label>
+                <button type="submit" class="gp-btn gp-btn--primary">Save Service</button>
+                <button type="button" id="service-reset" class="gp-btn gp-btn--ghost">
+                  Reset
+                </button>
+              </form>
+            </div>
+            <div>
+              <h3>Existing Services</h3>
+              <div id="officer-services-list" class="gp-card-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OFFICER: ALL APPLICATIONS -->
+        <div id="officer-applications" class="gp-tab-panel">
+          <h3>All Applications</h3>
+          <div id="officer-applications-list" class="gp-card-list"></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="gp-footer">
+    <span>E-Services for Gram Panchayat &copy; <span id="footer-year"></span></span>
+    <span id="log-indicator" class="gp-log-indicator">Logging enabled</span>
+  </footer>
+
+  <!-- Loading overlay -->
+  <div class="gp-loading" id="loading-overlay" aria-hidden="true">
+    <div class="gp-loading__spinner"></div>
+    <p class="gp-loading__text">Loading...</p>
+  </div>
+
+  <!-- Toast container will be created by toast.js -->
+  <script type="module" src="assets/js/toast.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
